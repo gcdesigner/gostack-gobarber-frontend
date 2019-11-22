@@ -11,8 +11,6 @@ import logo from '~/assets/logo-header.svg';
 export default function Header() {
   const profile = useSelector(state => state.user.profile);
 
-  console.tron.log(profile);
-
   return (
     <Container>
       <Content>

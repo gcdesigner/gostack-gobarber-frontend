@@ -35,15 +35,25 @@ export default function Dashboard() {
         params: { date },
       });
 
-      const timezone = Intl.DateTimeFormat().resolvedOptions();
+      console.tron.log(response.data);
+
+      // eslint-disable-next-line prefer-destructuring
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
       const data = range.map(hour => {
         const checkDate = setSeconds(setMinutes(setHours(date, hour), 0), 0);
         const compareDate = utcToZonedTime(checkDate, timezone);
 
+        const compare = response.data.find(
+          a => a.date === utcToZonedTime(checkDate, timezone)
+        );
+
+        console.tron.log(compare, utcToZonedTime(checkDate, timezone));
+
         return {
           time: `${hour}:00h`,
           past: isBefore(compareDate, new Date()),
+          date: response.data.map(a => parseISO(a.date) === compareDate),
           appointment: response.data.find(a =>
             isEqual(parseISO(a.date), compareDate)
           ),
@@ -81,6 +91,7 @@ export default function Dashboard() {
           <Time key={time.time} past={time.past} available={!time.appointment}>
             <strong>{time.time}</strong>
             <span>
+              {time.date}
               {time.appointment ? time.appointment.user.name : 'Em aberto'}
             </span>
           </Time>
