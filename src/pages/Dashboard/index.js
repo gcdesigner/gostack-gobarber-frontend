@@ -11,7 +11,7 @@ import {
   parseISO,
 } from 'date-fns';
 import { pt } from 'date-fns/esm/locale';
-import { utcToZonedTime } from 'date-fns-tz';
+import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 
 import api from '~/services/api';
@@ -35,27 +35,18 @@ export default function Dashboard() {
         params: { date },
       });
 
-      console.tron.log(response.data);
-
       // eslint-disable-next-line prefer-destructuring
       const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
       const data = range.map(hour => {
         const checkDate = setSeconds(setMinutes(setHours(date, hour), 0), 0);
-        const compareDate = utcToZonedTime(checkDate, timezone);
-
-        const compare = response.data.find(
-          a => a.date === utcToZonedTime(checkDate, timezone)
-        );
-
-        console.tron.log(compare, utcToZonedTime(checkDate, timezone));
+        const compareDate = utcToZonedTime(checkDate, timezone).toString();
 
         return {
           time: `${hour}:00h`,
           past: isBefore(compareDate, new Date()),
-          date: response.data.map(a => parseISO(a.date) === compareDate),
-          appointment: response.data.find(a =>
-            isEqual(parseISO(a.date), compareDate)
+          appointment: response.data.find(
+            a => zonedTimeToUtc(a.date, timezone).toString() === compareDate
           ),
         };
       });
@@ -91,7 +82,6 @@ export default function Dashboard() {
           <Time key={time.time} past={time.past} available={!time.appointment}>
             <strong>{time.time}</strong>
             <span>
-              {time.date}
               {time.appointment ? time.appointment.user.name : 'Em aberto'}
             </span>
           </Time>
