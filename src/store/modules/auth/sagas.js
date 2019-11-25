@@ -18,7 +18,7 @@ export function* signIn({ payload }) {
     const { token, user } = response.data;
 
     if (!user.provider) {
-      toast.error('Usuário não é um prestador.');
+      toast.error('User is not a provider');
       yield put(signFailure());
       return;
     }
@@ -29,9 +29,7 @@ export function* signIn({ payload }) {
 
     history.push('/dashboard');
   } catch (error) {
-    toast.error(
-      'Usuário não cadastrado. Favor conferir suas credenciais de acesso.'
-    );
+    toast.error('Please, check your credentials');
     yield put(signFailure());
   }
 }
@@ -47,10 +45,10 @@ export function* signUp({ payload }) {
       provider: true,
     });
 
-    toast.success('Cadastro realizado com sucesso.');
+    toast.success('Registration successfully');
     history.push('/');
   } catch (error) {
-    toast.error('Falha no cadastro. Verifique seus dados');
+    toast.error('Error. Check the informations');
     yield put(signFailure());
   }
 }

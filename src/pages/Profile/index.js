@@ -50,17 +50,14 @@ export default function Profile() {
       <Form schema={schema} initialData={profile} onSubmit={handleSubmit}>
         <AvatarInput name="avatar_id" />
 
-        <Input name="name" placeholder="Your full name" />
-        <Input name="email" type="email" placeholder="yout e-mail" />
+        <Input name="name" placeholder="Full name" />
+        <Input name="email" type="email" placeholder="Email" />
 
         <hr />
 
-        <InputPassword name="oldPassword" placeholder="Your password" />
-        <InputPassword name="password" placeholder="Your new password" />
-        <InputPassword
-          name="confirmPassword"
-          placeholder="Check your password"
-        />
+        <InputPassword name="oldPassword" placeholder="Old password" />
+        <InputPassword name="password" placeholder="New password" />
+        <InputPassword name="confirmPassword" placeholder="Check password" />
 
         <button className="btn" type="submit">
           Update
