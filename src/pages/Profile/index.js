@@ -7,26 +7,27 @@ import { updateProfileRequest } from '~/store/modules/user/actions';
 import { signOut } from '~/store/modules/auth/actions';
 
 import AvatarInput from './AvatarInput';
+import InputPassword from '~/components/InputPassword';
 
 import { Container } from './styles';
 
 const schema = Yup.object().shape({
-  name: Yup.string().required('O campo nome é obrigatório'),
+  name: Yup.string().required('Name is required'),
   email: Yup.string()
-    .email('Email inválido')
-    .required('O campo email é obrigatório'),
+    .email('Invalid email')
+    .required('Email is required'),
   avatar_id: Yup.number(),
   oldPassword: Yup.string(),
   password: Yup.string().when('oldPassword', (oldPassword, field) =>
     oldPassword
-      ? field.required('Campo obrigatório').min(6, 'Mínimo 6 caracteres')
+      ? field.required('Password is required').min(6, '6 characters minimum')
       : field
   ),
   confirmPassword: Yup.string().when('password', (password, field) =>
     password
       ? field
-          .required('Campo obrigatório')
-          .oneOf([Yup.ref('password')], 'Senhas não conferem')
+          .required('Check password is required')
+          .oneOf([Yup.ref('password')], 'Passwords do not match')
       : field
   ),
 });
@@ -49,23 +50,25 @@ export default function Profile() {
       <Form schema={schema} initialData={profile} onSubmit={handleSubmit}>
         <AvatarInput name="avatar_id" />
 
-        <Input name="name" placeholder="Seu nome completo" />
-        <Input name="email" type="email" placeholder="Seu email" />
+        <Input name="name" placeholder="Your full name" />
+        <Input name="email" type="email" placeholder="yout e-mail" />
 
         <hr />
 
-        <Input name="oldPassword" type="password" placeholder="Sua senha" />
-        <Input name="password" type="password" placeholder="Sua nova senha" />
-        <Input
+        <InputPassword name="oldPassword" placeholder="Your password" />
+        <InputPassword name="password" placeholder="Your new password" />
+        <InputPassword
           name="confirmPassword"
-          type="password"
-          placeholder="Confirme sua nova senha"
+          placeholder="Check your password"
         />
-        <button type="submit">Atualizar</button>
+
+        <button className="btn" type="submit">
+          Update
+        </button>
       </Form>
 
       <button type="button" onClick={handleSignOut}>
-        Sair do GoBarber
+        Logout GoBarber
       </button>
     </Container>
   );

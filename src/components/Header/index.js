@@ -23,17 +23,19 @@ export default function Header() {
           <Notifications />
           <Profile>
             <div>
-              <strong>Gabriel Costa</strong>
-              <Link to="/profile">Meu perfil</Link>
+              <strong>{profile.name}</strong>
+              <Link to="/profile">My profile</Link>
             </div>
-            <img
-              src={
-                profile.avatar
-                  ? profile.avatar.url
-                  : 'https://api.adorable.io/avatars/50/abott@adorable.png'
-              }
-              alt="Avatar"
-            />
+            <Link to="/profile">
+              <img
+                src={
+                  profile.avatar
+                    ? profile.avatar.url
+                    : 'https://api.adorable.io/avatars/50/abott@adorable.png'
+                }
+                alt="Avatar"
+              />
+            </Link>
           </Profile>
         </aside>
       </Content>

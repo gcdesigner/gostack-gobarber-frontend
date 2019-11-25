@@ -40,13 +40,15 @@ export default function Dashboard() {
 
       const data = range.map(hour => {
         const checkDate = setSeconds(setMinutes(setHours(date, hour), 0), 0);
-        const compareDate = utcToZonedTime(checkDate, timezone).toString();
+        const compareDate = utcToZonedTime(checkDate, timezone);
 
         return {
           time: `${hour}:00h`,
           past: isBefore(compareDate, new Date()),
           appointment: response.data.find(
-            a => zonedTimeToUtc(a.date, timezone).toString() === compareDate
+            a =>
+              zonedTimeToUtc(a.date, timezone).toString() ===
+              compareDate.toString()
           ),
         };
       });
@@ -82,7 +84,9 @@ export default function Dashboard() {
           <Time key={time.time} past={time.past} available={!time.appointment}>
             <strong>{time.time}</strong>
             <span>
-              {time.appointment ? time.appointment.user.name : 'Em aberto'}
+              {time.appointment
+                ? `Reserved by: ${time.appointment.user.name}`
+                : 'Open'}
             </span>
           </Time>
         ))}

@@ -6,16 +6,18 @@ import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 import { signUpRequest } from '~/store/modules/auth/actions';
 
+import InputPassword from '~/components/InputPassword';
+
 import logo from '~/assets/logo.svg';
 
 const schema = Yup.object().shape({
-  name: Yup.string().required('Informe seu nome completo'),
+  name: Yup.string().required('Full name is required'),
   email: Yup.string()
-    .email('Email inválido')
-    .required('Informe seu email'),
+    .email('Invalid email')
+    .required('Email is required'),
   password: Yup.string()
-    .min(6, 'No mínimo 6 caracteres')
-    .required('Informe sua senha'),
+    .min(6, '6 characters minimum')
+    .required('Password is required'),
 });
 
 export default function SignUp() {
@@ -30,16 +32,14 @@ export default function SignUp() {
       <img src={logo} alt="GoBarber" />
 
       <Form schema={schema} onSubmit={handleSubmit}>
-        <Input name="name" placeholder="Nome completo" />
-        <Input name="email" type="email" placeholder="Seu melhor email" />
-        <Input
-          name="password"
-          type="password"
-          placeholder="Sua Senha secreta"
-        />
+        <Input name="name" placeholder="Full name" />
+        <Input name="email" type="email" placeholder="Your best email" />
+        <InputPassword name="password" placeholder="Password" />
 
-        <button type="submit">Registrar</button>
-        <Link to="/">Já tenho uma conta</Link>
+        <button className="btn" type="submit">
+          Register
+        </button>
+        <Link to="/">I already have an account!</Link>
       </Form>
     </>
   );
